@@ -95,6 +95,11 @@ def load_raw_data_with_mhd(filename):
         data = np.fromfile(fid, count=np.prod(shape),dtype = np_type)
     data.shape = shape
 
+    # swap bytes if 'BinaryDataByteOrderMSB' is True
+    if meta_dict['BinaryDataByteOrderMSB'] == True:
+        data = data.byteswap()
+        meta_dict['BinaryDataByteOrderMSB'] = False
+
     # Begin 3D fix
     arr.reverse()
     if element_channels > 1:
